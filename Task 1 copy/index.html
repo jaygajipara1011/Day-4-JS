@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="container">
+        <div>
+            <label for="start">Start-Date:</label>
+            <input type="date" name="start" id="start">
+            <br><br>
+            <label for="end">End-Date:</label>
+            <input type="date" name="end" id="end">
+            <br><br>
+            <label for="color">Color :</label>
+            <input type="checkbox" name="color" id="color1" value="Red">Red
+            <input type="checkbox" name="color" id="color2" value="Blue">Blue
+            <input type="checkbox" name="color" id="color3" value="Green">Green
+            <br><br>
+            <input type="button" name="submit" id="submit" value="Submit" onclick="addEvent()">
+        </div>
+        <br><br>
+        <div id="tabledata" style="display: flex;  justify-content: space-around;">
+
+        </div>
+    </div>
+</body>
+<script>
+    let arr = [];
+
+    function addEvent() {
+        debugger;
+        arr.splice(0, arr.length);
+        console.log(arr)
+
+        let color = [];
+        let checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+        for (let i = 0; i < checkboxes.length; i++) {
+            color.push(checkboxes[i].value);
+        }
+        let colors = color.join(" , ")
+
+        let fdate = new Date(document.getElementById(`start`).value);
+        let ldate = new Date(document.getElementById(`end`).value);
+
+        // let fd = fdate.getDate();
+        // let ld = ldate.getDate();
+
+        let number = 1;
+        for (let i = fdate; i <= ldate; i.setDate(i.getDate() + 1)) {
+            let obj = {
+                number: number,
+                date: `${i.getDate()}-${i.getMonth() + 1}-${i.getFullYear()}`,
+                allcolor: colors
+            }
+            arr.push(obj)
+            number++
+        }
+        console.log(arr)
+        tabledata();
+        clear();
+
+    }
+
+    function tabledata() {
+
+        let str = ``;
+
+        arr.forEach((e) => {
+            str += `<div> <table border='1'> <tr>`
+            str += `<tr><td> No.: ${e.number} </td></tr>`
+            str += `<tr><td> Date: ${e['date']} </td></tr>`
+            str += `<tr><td> Color: ${e['allcolor']} </td></tr>`
+            str += '</tr> </table> </div>'
+        });
+        document.getElementById("tabledata").innerHTML = str;
+
+    }
+
+    function clear(){
+        document.getElementById("start").value="";
+        document.getElementById("end").value="";
+        document.getElementById("color1").checked=false;
+        document.getElementById("color2").checked=false;
+        document.getElementById("color3").checked=false;
+    }
+</script>
+
+</html>
